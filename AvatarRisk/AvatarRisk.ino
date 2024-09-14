@@ -33,7 +33,7 @@ bool CheckButton(){
   bool stat = CircleButtons.isTrue();
   if (last_stat != stat){
     playerTurn++;
-    if (playerTurn > 4){
+    if (playerTurn > 3){
       playerTurn = 0;
     }
   }
