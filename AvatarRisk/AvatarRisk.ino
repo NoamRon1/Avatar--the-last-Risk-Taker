@@ -3,10 +3,10 @@
 
 
 int NeoPixelLedsNum = 10;
-int NeoPixelPinTR = 2;
-int NeoPixelPinTL = 1;
-int NeoPixelPinBR = 8;
-int NeoPixelPinBL = 8;
+int NeoPixelPinTR = 3;
+int NeoPixelPinTL = 5;
+int NeoPixelPinBR = 6;
+int NeoPixelPinBL = 9;
 
 // TR = TopRight, TL = TopLeft, BR = ButtomRight, BL = ButtomLeft
 
