@@ -1,5 +1,4 @@
 #include <Adafruit_NeoPixel.h>
-#include "ButtonIRQ.h"
 
 
 int NeoPixelLedsNum = 12;
@@ -18,19 +17,31 @@ Adafruit_NeoPixel NeoPixelBR = Adafruit_NeoPixel(NeoPixelLedsNum, NeoPixelPinBR,
 Adafruit_NeoPixel NeoPixelBL = Adafruit_NeoPixel(NeoPixelLedsNum, NeoPixelPinBL, NEO_GRB + NEO_KHZ800); //make NEO_GRB to NEO_RGB if needed
 
 
-ButtonIRQ CircleButtons(2);
-
-bool last_stat = CircleButtons.isTrue();
+bool last_stat = digitalRead(2);
 int playerTurn = 0;
+bool safecheck = false;
 
 
 bool CheckButton(){
-  playerTurn++;
-  Serial.println("yes");
-  if (playerTurn > 3){
-    playerTurn = 0;
+  bool stat = digitalRead(2);
+  Serial.print("the thingy: ");
+  Serial.println(digitalRead(2));
+  if (stat == 1){
+    if (safecheck == true){
+      playerTurn++;
+      if (playerTurn > 3){
+        playerTurn = 0;
+      safecheck = false;
+      }
+    }
+    else{
+      safecheck = true;
+    }
   }
-}
+  Serial.println(playerTurn);
+  last_stat = stat;
+  delay(2000);
+  }
 
 void setup() {
   // put your setup code here, to run once:
@@ -38,8 +49,8 @@ void setup() {
   Serial.begin(9600);
   NeoPixelTR.begin();
   Serial.print(random(0, 255));
-  pinMode(2, INPUT);
-  attachInterrupt(digitalPinToInterrupt(2), CheckButton, RISING);
+  pinMode(2, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(2), CheckButton, FALLING);
   Serial.println("Setupy Finished");
 
 }
@@ -47,6 +58,7 @@ void setup() {
 
 void loop() {
   // put your main code here, to run repeatedly:
+  // Serial.println(digitalRead(2));
   switch (playerTurn){
     case 0: // TR
       Serial.print("TopRight Player Turn ");
@@ -67,7 +79,9 @@ void loop() {
       Serial.print(" ");
       Serial.print(b);
       Serial.print(" ");
-      Serial.println(c);
+      Serial.print(c);
+      Serial.print(" ");
+      Serial.println(playerTurn);
       delay(250);
       break;
     case 1:
@@ -89,7 +103,9 @@ void loop() {
       Serial.print(" ");
       Serial.print(b);
       Serial.print(" ");
-      Serial.println(c);
+      Serial.print(c);
+      Serial.print(" ");
+      Serial.println(playerTurn);
       delay(250);
       break;
     case 2:
@@ -111,8 +127,9 @@ void loop() {
       Serial.print(" ");
       Serial.print(b);
       Serial.print(" ");
-      Serial.println(c);
-      delay(250);
+      Serial.print(c);
+      Serial.print(" ");
+      Serial.println(playerTurn);      delay(250);
       break;
     case 3:
       Serial.print("ButtonLeft Player Turn ");
@@ -133,7 +150,9 @@ void loop() {
       Serial.print(" ");
       Serial.print(b);
       Serial.print(" ");
-      Serial.println(c);
+      Serial.print(c);
+      Serial.print(" ");
+      Serial.println(playerTurn);
       delay(250);
       break;
   }
