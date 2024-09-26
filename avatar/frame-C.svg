@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 389.29134 389.29118"
+   width="389.29135"
+   height="389.29117"
+   version="1.1"
+   id="svg52"
+   sodipodi:docname="frame - TL C.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview52"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050" />
+  <desc
+     id="desc1">frame - TL C.dxf - scale = 1.000000, origin = (0.000000, 0.000000), method = manual</desc>
+  <defs
+     id="defs4" />
+  <g
+     inkscape:groupmode="layer"
+     inkscape:label="MODELSKETCH_VISIBLE"
+     id="g44"
+     transform="translate(665.65543,-560.29915)">
+    <path
+       d="m -287.81878,754.94474 a 183.19097,183.19097 0 0 0 -366.38195,0 183.19097,183.19097 0 0 0 366.38195,0 z"
+       style="fill:none;stroke:#ff0000"
+       id="path39" />
+    <path
+       d="m -276.89391,754.94474 a 194.11585,194.11585 0 0 0 -388.2317,0 194.11585,194.11585 0 0 0 388.2317,0 z"
+       style="fill:none;stroke:#ff0000;stroke-width:1.05964"
+       id="path2" />
+  </g>
+</svg>
