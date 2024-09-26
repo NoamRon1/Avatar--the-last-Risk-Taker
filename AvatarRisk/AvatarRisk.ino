@@ -4,8 +4,8 @@
 
 // TR = TopRight, TL = TopLeft, BR = ButtomRight, BL = ButtomLeft
 // NeoPixel Conf:
-int NeoPixelLedsNumSmall = 12;
-int NeoPixelLedsNumBig = 20; //???
+int NeoPixelLedsNumSmall = 16;
+int NeoPixelLedsNumBig = 16; //???
 int NeoPixelPinTR = 3;
 int NeoPixelPinTL = 5;
 int NeoPixelPinBR = 6;
@@ -24,10 +24,10 @@ int playerTurn = 0; // Turns Conf
 bool safecheck = false; // makes the it will have to be clicked twice to register
 
 // Neo Pixel Setup:
-Adafruit_NeoPixel NeoPixelTR = Adafruit_NeoPixel(NeoPixelLedsNum, NeoPixelPinTR, NEO_GRB + NEO_KHZ800); //make NEO_GRB to NEO_RGB if needed
-Adafruit_NeoPixel NeoPixelTL = Adafruit_NeoPixel(NeoPixelLedsNum, NeoPixelPinTL, NEO_GRB + NEO_KHZ800); //make NEO_GRB to NEO_RGB if needed
-Adafruit_NeoPixel NeoPixelBR = Adafruit_NeoPixel(NeoPixelLedsNum, NeoPixelPinBR, NEO_GRB + NEO_KHZ800); //make NEO_GRB to NEO_RGB if needed
-Adafruit_NeoPixel NeoPixelBL = Adafruit_NeoPixel(NeoPixelLedsNum, NeoPixelPinBL, NEO_GRB + NEO_KHZ800); //make NEO_GRB to NEO_RGB if needed
+Adafruit_NeoPixel NeoPixelTR = Adafruit_NeoPixel(NeoPixelLedsNumSmall, NeoPixelPinTR, NEO_GRB + NEO_KHZ800); //make NEO_GRB to NEO_RGB if needed
+Adafruit_NeoPixel NeoPixelTL = Adafruit_NeoPixel(NeoPixelLedsNumSmall, NeoPixelPinTL, NEO_GRB + NEO_KHZ800); //make NEO_GRB to NEO_RGB if needed
+Adafruit_NeoPixel NeoPixelBR = Adafruit_NeoPixel(NeoPixelLedsNumSmall, NeoPixelPinBR, NEO_GRB + NEO_KHZ800); //make NEO_GRB to NEO_RGB if needed
+Adafruit_NeoPixel NeoPixelBL = Adafruit_NeoPixel(NeoPixelLedsNumSmall, NeoPixelPinBL, NEO_GRB + NEO_KHZ800); //make NEO_GRB to NEO_RGB if needed
 
 // Screens Setup:
 LiquidCrystal_I2C lcd (0x27, 20, 4);
@@ -55,13 +55,14 @@ bool CheckButton(){
   start_time = millis();
   }
 
-void lcd_begin():
+void lcd_begin(){
   lcd.init(); //initialize the lcd
   lcd.backlight(); //open the backlight 
   lcd.setCursor(0, 0);
   lcd2.init();
   lcd2.backlight();
   lcd2.setCursor(0, 0);
+}
 
 
 void setup() {
@@ -84,6 +85,7 @@ void loop() {
 
 
 void playerprint(int player){
+  /*
   Serial.print("Player "); Serial.print(player); Serial.print(" Turn");
   lcd.clear();
   lcd.setCursor(1,0);
@@ -99,7 +101,8 @@ void playerprint(int player){
   lcd2.print("Turn");
   lcd2.setCursor(0, 2)
   lcd2.print("Time Past: "); lcd.print((millis()-start_time)/1000); lcd.print(" Sec");
-  for (int i=0; i<12; i++){
+  */
+  for (int i=0; i<16; i++){
     a = random(0, 255);
     b = random(0, 255);
     c = random(0, 255);
