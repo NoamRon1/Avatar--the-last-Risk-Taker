@@ -1,3 +1,6 @@
-# from avatar import avatar
-import time
-# game = avatar(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+from avatar import Avatar
+
+game = Avatar(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+game.begin()
+game.run()
+
