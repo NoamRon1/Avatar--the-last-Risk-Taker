@@ -28,10 +28,10 @@ class Avatar:
         self._P3P = P3P
         self._P4P = P4P
 
-        self._NP1 = 0
-        self._NP2 = 0
-        self._NP3 = 0
-        self._NP4 = 0
+        self._NP1 = None
+        self._NP2 = None
+        self._NP3 = None
+        self._NP4 = None
 
 
         self._P12N = 20
@@ -44,8 +44,8 @@ class Avatar:
         self._S1S = S1S
         self._S2S = S2S
 
-        self._lcd_1 = 0
-        self._lcd_2 = 0
+        self._lcd_1 = None
+        self._lcd_2 = None
 
         #buttons pins:
         self._B1P = B1P
@@ -53,10 +53,10 @@ class Avatar:
         self._B3P = B3P
         self._B4P = B4P
 
-        self._B1 = 0
-        self._B2 = 0
-        self._B3 = 0
-        self._B4 = 0
+        self._B1 = None
+        self._B2 = None
+        self._B3 = None
+        self._B4 = None
 
         #Dictionary setup
         self._PD = {self._NP1: "Player 1", self._NP2: "Player 2", self._NP3: "Player 3", self._NP4: "Player 4"}
@@ -119,7 +119,7 @@ class Avatar:
 
 
     def lcdPrint(self, P1, message):
-        if message == None:
+        if not message:
             self._lcd_1.clear()
             self._lcd_1.putstr(self._PD.get(P1))
             self._lcd_1.move_to(0, 1)
