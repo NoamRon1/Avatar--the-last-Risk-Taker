@@ -17,7 +17,7 @@ import random
 
 class Avatar:
     
-    def __init__(self, P1P, P2P, P3P, P4P, S1Adr, S2Adr, S1S, S2S, B1P, B2P, B3P, B4P):
+    def __init__(self, P1P, P2P, P3P, P4P, S1Adr, S2Adr, S1S, S2S, BP):
 
         self._PTurn = 1 #Player Turn changes by buttons.
 
@@ -45,63 +45,56 @@ class Avatar:
         self._S2S = S2S
 
         self._lcd_1 = None
-        self._lcd_2 = None
+        # self._lcd_2 = None
 
         #buttons pins:
-        self._B1P = B1P
-        self._B2P = B2P
-        self._B3P = B3P
-        self._B4P = B4P
+        self._BP = BP
 
         self._B1 = None
-        self._B2 = None
-        self._B3 = None
-        self._B4 = None
 
         #Dictionary setup
         self._PD = {self._NP1: "Player 1", self._NP2: "Player 2", self._NP3: "Player 3", self._NP4: "Player 4"}
 
+        self.button_state = False
+        self.button_counter = False
+
     def NeoPixelSetup(self):
-        NP1 = neopixel.Neopixel(machine.Pin(self._P1P), self._P12N)
-        NP2 = neopixel.Neopixel(machine.Pin(self._P2P), self._P12N)
-        NP3 = neopixel.Neopixel(machine.Pin(self._P3P), self._P34N)
-        NP4 = neopixel.Neopixel(machine.Pin(self._P4P), self._P34N)
+        NP1 = neopixel.NeoPixel(machine.Pin(self._P1P), self._P12N)
+        NP2 = neopixel.NeoPixel(machine.Pin(self._P2P), self._P12N)
+        NP3 = neopixel.NeoPixel(machine.Pin(self._P3P), self._P34N)
+        NP4 = neopixel.NeoPixel(machine.Pin(self._P4P), self._P34N)
 
         self._NP1, self._NP2, self._NP3, self._NP4 = NP1, NP2, NP3, NP4
 
         print("NeoPixel Setup completed")
-    
+        self._PD = {self._NP1: "Player 1", self._NP2: "Player 2", self._NP3: "Player 3", self._NP4: "Player 4"}
+        print("Dictionary setup finally complete")
+
     def LcdSetup(self):
         i2c = SoftI2C(sda=Pin(21), scl=Pin(22), freq=400000)
 
         self._lcd_1 = I2cLcd(i2c, self._S1Adr, self._S1S[0], self._S1S[1])
-        self._lcd_2 = I2cLcd(i2c, self._S2Adr, self._S2S[0], self._S2S[1])
+        # self._lcd_2 = I2cLcd(i2c, self._S2Adr, self._S2S[0], self._S2S[1])
 
         self._lcd_1.putstr("LCD Setup completed")
-        self._lcd_2.putstr("LCD Setup completed")
+        # self._lcd_2.putstr("LCD Setup completed")
         print("LCD Setup completed")
 
         sleep(1)
         self._lcd_1.clear()
-        self._lcd_2.clear()
+        # self._lcd_2.clear()
 
     def ButtonsSetup(self):
-        self._B1 = Pin(14, Pin.IN)
-        self._B1.irq(trigger=Pin.IRQ_RISINGm, handler=self.ButtonChange)
-
-        self._B2 = Pin(14, Pin.IN)
-        self._B2.irq(trigger=Pin.IRQ_RISINGm, handler=self.ButtonChange)
-
-        self._B2 = Pin(14, Pin.IN)
-        self._B2.irq(trigger=Pin.IRQ_RISINGm, handler=self.ButtonChange)
-
-        self._B2 = Pin(14, Pin.IN)
-        self._B2.irq(trigger=Pin.IRQ_RISINGm, handler=self.ButtonChange)
+        self._B1 = Pin(self._BP, Pin.IN, Pin.PULL_DOWN)
+        self._B1.irq(trigger=Pin.IRQ_FALLING, handler=self.ButtonChange)
 
     def NeoPixelNot(self, P1, P2, P3):
-        P1.fill((255, 0, 0))
+        P1.fill((255, 255, 255))
         P2.fill((255, 0, 0))
         P3.fill((255, 0, 0))
+        P1.write()
+        P2.write()
+        P3.write()
 
     def NeoPixelYes(self, P1, PN):
         for i in range(PN):
@@ -111,30 +104,45 @@ class Avatar:
             P1[i] = (a, b, c)
             P1.write()
 
-    def ButtonChange(self):
+    def ButtonChange(self, pin):
+
+        B1_value = self._B1.value()
+        if self.button_state == B1_value:
+            return
+        #if not self.button_counter:
+            #self.button_counter = True
+            #return
+        self.button_counter = False
+        print("Next Player")
         if self._PTurn == 4:
             self._PTurn = 1
         else:
             self._PTurn += 1
+        print(self._PTurn)
+        sleep(.3)
+        self.button_state = B1_value
+
 
 
     def lcdPrint(self, P1, message):
         if not message:
+            print("hi")
             self._lcd_1.clear()
             self._lcd_1.putstr(self._PD.get(P1))
+            print(self._PD.get(P1))
             self._lcd_1.move_to(0, 1)
             self._lcd_1.putstr("Turn")
 
-            self._lcd_2.clear()
-            self._lcd_2.putstr(self._PD.get(P1))
-            self._lcd_2.move_to(0, 1)
-            self._lcd_2.putstr("Turn")
+           # self._lcd_2.clear()
+          #  self._lcd_2.putstr(self._PD.get(P1))
+           # self._lcd_2.move_to(0, 1)
+            #self._lcd_2.putstr("Turn")
         else:
             self._lcd_1.clear()
             self._lcd_1.putstr(message)
 
-            self._lcd_2.clear()
-            self._lcd_2.putstr(message)
+           # self._lcd_2.clear()
+            #self._lcd_2.putstr(message)
 
 
     def begin(self):
@@ -147,7 +155,10 @@ class Avatar:
 
     def run(self):
         while self._game:
+            sleep(0.2)
+            print(self._B1.value())
             if self._PTurn == 1:
+                print("yes")
                 self.NeoPixelYes(self._NP1, self._P12N)
                 self.NeoPixelNot(self._NP2, self._NP3, self._NP4)
                 self.lcdPrint(self._NP1, None)
@@ -168,4 +179,6 @@ class Avatar:
                 self.lcdPrint(self._NP4, None)
 
             else:
+                print(self._PTurn)
+                print("break LLL")
                 break
