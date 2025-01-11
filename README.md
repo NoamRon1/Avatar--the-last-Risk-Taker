@@ -1,4 +1,4 @@
-#This Repo isn't finished - Still not working properly!
+# This Repo isn't finished - Still not working properly!
 # We made a "Avatar the last air bender" themed Risk (The game).
 ### The SVG files is made for the K40 Wissperrer for laser cutting our Risk map in 4 pieces of 500x400x3 mm wood.
 ### The Size of the board is 930x650 mm.
