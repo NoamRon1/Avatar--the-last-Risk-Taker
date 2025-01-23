@@ -1,12 +1,12 @@
-# import i2c_lcd
+import i2c_lcd
 import machine
 import neopixel
 import time
 
 
 class Avatar:
-    def __init__(self, neopixel_pin_1, neopixel_pin_2, neopixel_pin_3, neopixel_pin_4, button_pin,
-                 neopixel_led_count=12):
+    def __init__(self, neopixel_pin_1, neopixel_pin_2, neopixel_pin_3, neopixel_pin_4, button_pin, lcd_address_1=0x27,
+                 lcd_size_1=(2, 16), neopixel_led_count=12):
         # neopixel
         self.neopixel_1 = neopixel.NeoPixel(machine.Pin(neopixel_pin_1), neopixel_led_count)
         self.neopixel_2 = neopixel.NeoPixel(machine.Pin(neopixel_pin_2), neopixel_led_count)
@@ -34,6 +34,14 @@ class Avatar:
         self.button = machine.Pin(button_pin, machine.Pin.IN, machine.Pin.PULL_DOWN)
         self.button.irq(trigger=machine.Pin.IRQ_FALLING, handler=self.on_press)
 
+        # lcd
+        i2c = machine.SoftI2C(sda=machine.Pin(21), scl=machine.Pin(22), freq=400000)
+        self.lcd1 = i2c_lcd.I2cLcd(i2c, lcd_address_1, *lcd_size_1)
+        self.lcd1.putstr("LCD Setup completed")
+        print("LCD Setup completed")
+        time.sleep(1)
+        self.lcd1.clear()
+
         # general game
         self.current_player = 0
 
@@ -41,6 +49,7 @@ class Avatar:
         while True:
             self.neopixel_turn(self.current_player)
             self.led_index += 1
+            self.write_lcd("Line 1", "Line 2")
             time.sleep(0.01)
 
     def neopixel_turn(self, i):
@@ -55,3 +64,10 @@ class Avatar:
     def on_press(self, a):
         self.current_player = (self.current_player + 1) % 4
         print(self.current_player)
+
+    def write_lcd(self, text_line_1, text_line_2):
+        self.lcd1.clear()
+        self.lcd1.putstr(text_line_1)
+        self.lcd1.move_to(0, 1)
+        self.lcd1.putstr(text_line_2)
+        self.lcd1.move_to(0, 0)
