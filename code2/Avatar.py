@@ -5,7 +5,9 @@ import time
 
 
 class Avatar:
-    def __init__(self, neopixel_pin_1, neopixel_pin_2, neopixel_pin_3, neopixel_pin_4, neopixel_led_count=12):
+    def __init__(self, neopixel_pin_1, neopixel_pin_2, neopixel_pin_3, neopixel_pin_4, button_pin,
+                 neopixel_led_count=12):
+        # neopixel
         self.neopixel_1 = neopixel.NeoPixel(machine.Pin(neopixel_pin_1), neopixel_led_count)
         self.neopixel_2 = neopixel.NeoPixel(machine.Pin(neopixel_pin_2), neopixel_led_count)
         self.neopixel_3 = neopixel.NeoPixel(machine.Pin(neopixel_pin_3), neopixel_led_count)
@@ -28,11 +30,18 @@ class Avatar:
         ]
         self.led_index = 0
 
+        # button
+        self.button = machine.Pin(button_pin, machine.Pin.IN, machine.Pin.PULL_DOWN)
+        self.button.irq(trigger=machine.Pin.IRQ_FALLING, handler=self.on_press)
+
+        # general game
+        self.current_player = 0
+
     def run(self):
         while True:
-            self.neopixel_turn(1)
+            self.neopixel_turn(self.current_player)
             self.led_index += 1
-            time.sleep(0.1)
+            time.sleep(0.01)
 
     def neopixel_turn(self, i):
         for j in range(4):
@@ -42,3 +51,7 @@ class Avatar:
                 for led in range(self.neopixel_led_count):
                     self.neopixels[j][led] = self.green_color_list[(self.led_index + led) % self.neopixel_led_count]
             self.neopixels[j].write()
+
+    def on_press(self, a):
+        self.current_player = (self.current_player + 1) % 4
+        print(self.current_player)

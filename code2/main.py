@@ -1,4 +1,4 @@
 from Avatar import Avatar
 
-game = Avatar(18, 19, 21, 14)
+game = Avatar(18, 19, 21, 14, 13)
 game.run()
