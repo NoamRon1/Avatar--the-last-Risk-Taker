@@ -36,9 +36,8 @@ class Avatar:
 
         # lcd
         i2c = machine.SoftI2C(sda=machine.Pin(sda_pin), scl=machine.Pin(scl_pin), freq=400000)
-        # i2c_2 = machine.SoftI2C(sda=machine.Pin(sda_pin), scl=machine.Pin(scl_pin), freq=400000)
-        self.lcd1 = i2c_lcd.I2cLcd(i2c, lcd_address_1, lcd_size_1[0], lcd_size_1[1])
-        self.lcd2 = i2c_lcd.I2cLcd(i2c, lcd_address_2, lcd_size_2[0], lcd_size_2[1])
+        self.lcd1 = i2c_lcd.I2cLcd(i2c, lcd_address_1, *lcd_size_1)
+        self.lcd2 = i2c_lcd.I2cLcd(i2c, lcd_address_2, *lcd_size_2)
         self.lcd1.putstr("LCD Setup completed")
         self.lcd2.putstr("LCD Setup completed")
         print("LCD Setup completed")
