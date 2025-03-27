@@ -5,7 +5,7 @@ import time
 
 
 class Avatar:
-    def __init__(self, neopixel_pin_1, neopixel_pin_2, neopixel_pin_3, neopixel_pin_4, button_pin, sda_pin, scl_pin,
+    def __init__(self, neopixel_pin_1, neopixel_pin_2, neopixel_pin_3, neopixel_pin_4, button_pin, sda_pin, scl_pin, em_stop_pin,
                  lcd_address_1=0x27, lcd_address_2=0x26, lcd_size_1=(2, 16), lcd_size_2=(2, 16), neopixel_led_count=12):
         # neopixel
         self.neopixel_1 = neopixel.NeoPixel(machine.Pin(neopixel_pin_1), neopixel_led_count)
@@ -37,23 +37,25 @@ class Avatar:
         # lcd
         i2c = machine.SoftI2C(sda=machine.Pin(sda_pin), scl=machine.Pin(scl_pin), freq=400000)
         self.lcd1 = i2c_lcd.I2cLcd(i2c, lcd_address_1, *lcd_size_1)
-        self.lcd2 = i2c_lcd.I2cLcd(i2c, lcd_address_2, *lcd_size_2)
+        # self.lcd2 = i2c_lcd.I2cLcd(i2c, lcd_address_2, *lcd_size_2)
         self.lcd1.putstr("LCD Setup completed")
-        self.lcd2.putstr("LCD Setup completed")
+        # self.lcd2.putstr("LCD Setup completed")
         print("LCD Setup completed")
         time.sleep(1)
         self.lcd1.clear()
-        self.lcd2.clear()
+        # self.lcd2.clear()
+
+        self.emergency_stop = machine.Pin(em_stop_pin, machine.Pin.IN, machine.Pin.PULL_DOWN)
 
         # general game
         self.current_player = 0
 
     def run(self):
-        while True:
+        while self.emergency_stop.value() == 0:
             self.neopixel_turn(self.current_player)
             self.led_index += 1
             self.write_lcd("  Game Running", f"   Player: #{self.current_player + 1}")
-            time.sleep(0.1)
+            time.sleep(0.05)
 
     def neopixel_turn(self, i):
         for j in range(4):
@@ -70,12 +72,15 @@ class Avatar:
 
     def write_lcd(self, text_line_1, text_line_2):
         self.lcd1.clear()
-        self.lcd2.clear()
+        # self.lcd2.clear()
         self.lcd1.putstr(text_line_1)
-        self.lcd2.putstr(text_line_1)
+        # self.lcd2.putstr(text_line_1)
         self.lcd1.move_to(0, 1)
-        self.lcd2.move_to(0, 1)
+        # self.lcd2.move_to(0, 1)
         self.lcd1.putstr(text_line_2)
-        self.lcd2.putstr(text_line_2)
+        # self.lcd2.putstr(text_line_2)
         self.lcd1.move_to(0, 0)
-        self.lcd2.move_to(0, 0)
+        # self.lcd2.move_to(0, 0)
+
+
+
