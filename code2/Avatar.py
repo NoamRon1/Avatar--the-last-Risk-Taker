@@ -50,7 +50,7 @@ class Avatar:
         # self.lcd2.clear()
 
         self.emergency_stop = machine.Pin(em_stop_pin, machine.Pin.IN, machine.Pin.PULL_DOWN)
-
+ 
         # general game
         self.current_player = 0
 
@@ -87,7 +87,7 @@ class Avatar:
                     self.neopixels[j][led] = self.green_color_list[(self.led_index + led) % self.neopixel_led_count]
             self.neopixels[j].write()
 
-    def on_press(self, a):
+    def on_press(self, msg):
         self.current_player = (self.current_player + 1) % 4
         self.send_msg(self.current_player + 1)
         print(self.current_player)
