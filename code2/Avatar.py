@@ -1,11 +1,10 @@
 import i2c_lcd
 import machine
 import neopixel
-import time
-
 import network
 import time
 from umqtt.simple import MQTTClient
+
 
 class Avatar:
     def __init__(self, neopixel_pin_1, neopixel_pin_2, neopixel_pin_3, neopixel_pin_4, button_pin, sda_pin, scl_pin,
@@ -50,7 +49,7 @@ class Avatar:
         self.lcd2.clear()
 
         self.emergency_stop = machine.Pin(em_stop_pin, machine.Pin.IN, machine.Pin.PULL_DOWN)
- 
+
         # general game
         self.current_player = 0
 
@@ -156,4 +155,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
