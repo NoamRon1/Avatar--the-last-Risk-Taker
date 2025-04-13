@@ -41,13 +41,13 @@ class Avatar:
         # lcd
         i2c = machine.SoftI2C(sda=machine.Pin(sda_pin), scl=machine.Pin(scl_pin), freq=400000)
         self.lcd1 = i2c_lcd.I2cLcd(i2c, lcd_address_1, *lcd_size_1)
-        # self.lcd2 = i2c_lcd.I2cLcd(i2c, lcd_address_2, *lcd_size_2)
+        self.lcd2 = i2c_lcd.I2cLcd(i2c, lcd_address_2, *lcd_size_2)
         self.lcd1.putstr("LCD Setup completed")
-        # self.lcd2.putstr("LCD Setup completed")
+        self.lcd2.putstr("LCD Setup completed")
         print("LCD Setup completed")
         time.sleep(1)
         self.lcd1.clear()
-        # self.lcd2.clear()
+        self.lcd2.clear()
 
         self.emergency_stop = machine.Pin(em_stop_pin, machine.Pin.IN, machine.Pin.PULL_DOWN)
  
@@ -94,22 +94,22 @@ class Avatar:
 
     def write_lcd(self, text_line_1, text_line_2):
         self.lcd1.clear()
-        # self.lcd2.clear()
+        self.lcd2.clear()
         self.lcd1.putstr(text_line_1)
-        # self.lcd2.putstr(text_line_1)
+        self.lcd2.putstr(text_line_1)
         self.lcd1.move_to(0, 1)
-        # self.lcd2.move_to(0, 1)
+        self.lcd2.move_to(0, 1)
         self.lcd1.putstr(text_line_2)
-        # self.lcd2.putstr(text_line_2)
+        self.lcd2.putstr(text_line_2)
         self.lcd1.move_to(0, 0)
-        # self.lcd2.move_to(0, 0)
+        self.lcd2.move_to(0, 0)
 
     def update_lcd(self, player_num):
         self.lcd1.move_to(12, 1)
         self.lcd1.putstr(str(player_num))
 
-        # self.lcd2.move_to(12, 1)
-        # self.lcd2.putstr(str(player_num))
+        self.lcd2.move_to(12, 1)
+        self.lcd2.putstr(str(player_num))
 
     def connect_wifi(self):
         wlan = network.WLAN(network.STA_IF)
