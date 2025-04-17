@@ -4,12 +4,12 @@ import neopixel
 import network
 import time
 from umqtt.simple import MQTTClient
-
+import json
 
 class Avatar:
     def __init__(self, neopixel_pin_1, neopixel_pin_2, neopixel_pin_3, neopixel_pin_4, button_pin, sda_pin, scl_pin,
                  em_stop_pin,
-                 lcd_address_1=0x27, lcd_address_2=0x26, lcd_size_1=(2, 16), lcd_size_2=(2, 16), neopixel_led_count=12):
+                 lcd_address_1=0x27, lcd_address_2=0x26, lcd_size_1=(4, 20), lcd_size_2=(2, 16), neopixel_led_count=12, info_path="info.json"):
         # neopixel
         self.neopixel_1 = neopixel.NeoPixel(machine.Pin(neopixel_pin_1), neopixel_led_count)
         self.neopixel_2 = neopixel.NeoPixel(machine.Pin(neopixel_pin_2), neopixel_led_count)
@@ -54,21 +54,28 @@ class Avatar:
         self.current_player = 0
 
         # network
-        self.WIFI_SSID = "ENTER NETWORK SSID HERE"
-        self.WIFI_PASSWORD = "ENTER NETWORK PASSWORD HERE"
+        self.WIFI_SSID = ""
+        self.WIFI_PASSWORD = ""
         self.AIO_SERVER = "io.adafruit.com"
-        self.AIO_USERNAME = "ENTER USERNAME HERE"
-        self.AIO_KEY = "ENTER ACSSES KEY HERE"
-        self.AIO_FEED = f"{self.AIO_USERNAME}/feeds/ENTER FEED1 NAME"
-        self.AIO_PLAYER_NUM = f"{self.AIO_USERNAME}/feeds/ENTER FEED1 NAME"
-        self.AIO_PLAYER_SET = f"{self.AIO_USERNAME}/feeds/ENTER FEED1 NAME"
+        self.AIO_USERNAME = ""
+        self.AIO_KEY = ""
+        self.AIO_FEED = ""
+        self.AIO_PLAYER_NUM = ""
+        self.AIO_PLAYER_SET = ""
         self.client = None
 
-    def run(self):
-        self.connect_wifi()
-        self.connect_adafruit()
+        # json
+        self.info_path = info_path
 
-        self.write_lcd("  Game Running", f"   Player: #{self.current_player + 1}")
+    def run(self):
+        if self.begin():
+            print("Error in initialization")
+            return
+
+        self.write_lcd(("--------------------",
+                        "| Game Running.... |",
+                        "|Current Player: #1|",
+                        "--------------------"))
 
         while self.emergency_stop.value() == 0:
             self.client.check_msg()
@@ -91,44 +98,50 @@ class Avatar:
         self.send_msg(self.current_player + 1)
         print(self.current_player)
 
-    def write_lcd(self, text_line_1, text_line_2):
-        self.lcd1.clear()
-        self.lcd2.clear()
-        self.lcd1.putstr(text_line_1)
-        self.lcd2.putstr(text_line_1)
-        self.lcd1.move_to(0, 1)
-        self.lcd2.move_to(0, 1)
-        self.lcd1.putstr(text_line_2)
-        self.lcd2.putstr(text_line_2)
-        self.lcd1.move_to(0, 0)
-        self.lcd2.move_to(0, 0)
+    def write_lcd(self, text: tuple):
+        for i in range(len(tuple)):
+            self.lcd1.move_to(0, i)
+            self.lcd1.putstr(text[i])
+
+            self.lcd2.move_to(0, i)
+            self.lcd2.putstr(text[i])
 
     def update_lcd(self, player_num):
-        self.lcd1.move_to(12, 1)
+        self.lcd1.move_to(18, 2)
         self.lcd1.putstr(str(player_num))
 
-        self.lcd2.move_to(12, 1)
+        self.lcd2.move_to(18, 2)
         self.lcd2.putstr(str(player_num))
 
     def connect_wifi(self):
-        wlan = network.WLAN(network.STA_IF)
-        wlan.active(True)
-        wlan.connect(self.WIFI_SSID, self.WIFI_PASSWORD)
+        try:
+            wlan = network.WLAN(network.STA_IF)
+            wlan.active(True)
+            wlan.connect(self.WIFI_SSID, self.WIFI_PASSWORD)
 
-        print("Connecting to Wi-Fi...", end="")
-        while not wlan.isconnected():
-            time.sleep(0.5)
-            print(".", end="")
+            print("Connecting to Wi-Fi...", end="")
+            while not wlan.isconnected():
+                time.sleep(0.5)
+                print(".", end="")
 
-        print("\nConnected! IP:", wlan.ifconfig()[0])
+            print("\nConnected! IP:", wlan.ifconfig()[0])
+
+        except Exception as e:
+            print("Failed to connect to Wi-Fi:", e)
+            return 1 # an error occurred
 
     def connect_adafruit(self):
-        self.client = MQTTClient(self.AIO_USERNAME, self.AIO_SERVER, user=self.AIO_USERNAME, password=self.AIO_KEY)
-        self.client.set_callback(self.on_message)
-        self.client.connect()
-        self.client.subscribe(self.AIO_FEED.encode())
-        self.client.subscribe(self.AIO_PLAYER_SET.encode())
-        print("Connected to Adafruit IO")
+        try:
+            self.client = MQTTClient(self.AIO_USERNAME, self.AIO_SERVER, user=self.AIO_USERNAME, password=self.AIO_KEY)
+            self.client.set_callback(self.on_message)
+            self.client.connect()
+            self.client.subscribe(self.AIO_FEED.encode())
+            self.client.subscribe(self.AIO_PLAYER_SET.encode())
+            print("Connected to Adafruit IO")
+
+        except Exception as e:
+            print("Failed to connect to Adafruit IO:", e)
+            return 1 # an error occurred
 
     def send_msg(self, msg):
         try:
@@ -147,9 +160,67 @@ class Avatar:
             if msg == b'1':
                 self.on_press(1)
 
+    def wait_to_start(self):
+        self.write_lcd(("--------------------",
+                        " Press start button",
+                        " to start the game ",
+                        "--------------------"))
+
+        print("Waiting for button press to start the game...")
+
+        while not self.emergency_stop.value():
+            time.sleep(0.1)
+        print("Button pressed, starting the game...")
+        self.lcd1.clear()
+        self.lcd2.clear()
+
+    def json_data_read(self):
+        try:
+            with open(self.info_path, 'r') as file:
+                data = json.load(file)
+                self.WIFI_SSID = data['SSID']
+                self.WIFI_PASSWORD = data['PASSWORD']
+                self.AIO_USERNAME = data['USERNAME']
+                self.AIO_KEY = data['KEY']
+                self.AIO_FEED = data['FEED_1']
+                self.AIO_PLAYER_NUM = data['FEED_2']
+                self.AIO_PLAYER_SET = data['FEED_3']
+                print("Data read from JSON file successfully.")
+
+        except FileNotFoundError:
+            print("FILE NOT FOUND")
+            return 1 #an error occurred
+
+    def begin(self):
+        if self.json_data_read():
+            print("Error reading JSON file")
+            return 1 # an error occurred
+        self.write_lcd(("--------------------",
+                        "  JSON was loaded",
+                        "    successfully",
+                        "--------------------"))
+
+        if self.connect_wifi():
+            print("Error connecting to Wi-Fi")
+            return 1 # an error occurred
+        self.write_lcd(("--------------------",
+                        "  Wi-Fi was loaded",
+                        "    successfully ",
+                        "--------------------"))
+
+        if self.connect_adafruit():
+            print("Error connecting to Adafruit IO")
+            return 1 # an error occurred
+        self.write_lcd(("--------------------",
+                        "   Adafruit IO was",
+                        "loaded successfully ",
+                        "--------------------"))
+
+        self.wait_to_start()
+
 
 def main():
-    game = Avatar(18, 19, 5, 14, 13, 16, 17, 2)
+    game = Avatar(18, 19, 5, 14, 13, 16, 17, 2, info_path="real_info.json")
     game.run()
 
 
