@@ -99,6 +99,9 @@ class Avatar:
         print(self.current_player)
 
     def write_lcd(self, text: tuple):
+        self.lcd1.clear()
+        self.lcd2.clear()
+
         for i in range(len(tuple)):
             self.lcd1.move_to(0, i)
             self.lcd1.putstr(text[i])
@@ -182,9 +185,9 @@ class Avatar:
                 self.WIFI_PASSWORD = data['PASSWORD']
                 self.AIO_USERNAME = data['USERNAME']
                 self.AIO_KEY = data['KEY']
-                self.AIO_FEED = data['FEED_1']
-                self.AIO_PLAYER_NUM = data['FEED_2']
-                self.AIO_PLAYER_SET = data['FEED_3']
+                self.AIO_FEED = f"{self.AIO_USERNAME}/feeds/{data['FEED_1']}"
+                self.AIO_PLAYER_NUM = f"{self.AIO_USERNAME}/feeds/{data['FEED_2']}"
+                self.AIO_PLAYER_SET = f"{self.AIO_USERNAME}/feeds/{data['FEED_3']}"
                 print("Data read from JSON file successfully.")
 
         except FileNotFoundError:
