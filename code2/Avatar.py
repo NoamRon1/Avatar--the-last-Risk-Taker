@@ -9,7 +9,7 @@ import json
 class Avatar:
     def __init__(self, neopixel_pin_1, neopixel_pin_2, neopixel_pin_3, neopixel_pin_4, button_pin, sda_pin, scl_pin,
                  em_stop_pin,
-                 lcd_address_1=0x27, lcd_address_2=0x26, lcd_size_1=(4, 20), lcd_size_2=(2, 16), neopixel_led_count=12, info_path="info.json"):
+                 lcd_address_1=0x27, lcd_address_2=0x26, lcd_size_1=(4, 20), lcd_size_2=(4, 20), neopixel_led_count=12, info_path="info.json"):
         # neopixel
         self.neopixel_1 = neopixel.NeoPixel(machine.Pin(neopixel_pin_1), neopixel_led_count)
         self.neopixel_2 = neopixel.NeoPixel(machine.Pin(neopixel_pin_2), neopixel_led_count)
@@ -41,6 +41,7 @@ class Avatar:
         i2c = machine.SoftI2C(sda=machine.Pin(sda_pin), scl=machine.Pin(scl_pin), freq=400000)
         self.lcd1 = i2c_lcd.I2cLcd(i2c, lcd_address_1, *lcd_size_1)
         self.lcd2 = i2c_lcd.I2cLcd(i2c, lcd_address_2, *lcd_size_2)
+        self.lcd1.display_on()
         self.lcd1.putstr("LCD Setup completed")
         self.lcd2.putstr("LCD Setup completed")
         print("LCD Setup completed")
@@ -84,6 +85,11 @@ class Avatar:
             self.update_lcd(self.current_player + 1)
             time.sleep(0.1)
 
+        self.write_lcd(("--------------------",
+                        "| Game Paused.... |",
+                        "|     Goodbye!    |",
+                        "--------------------"))
+
     def neopixel_turn(self, i):
         for j in range(4):
             if j != i:
@@ -102,9 +108,10 @@ class Avatar:
         self.lcd1.clear()
         self.lcd2.clear()
 
-        for i in range(len(tuple)):
+        for i in range(len(text)):
             self.lcd1.move_to(0, i)
             self.lcd1.putstr(text[i])
+
 
             self.lcd2.move_to(0, i)
             self.lcd2.putstr(text[i])
@@ -135,6 +142,11 @@ class Avatar:
 
     def connect_adafruit(self):
         try:
+            wlan = network.WLAN(network.STA_IF)
+            if not wlan.isconnected():
+                print("Wi-Fi disconnected before MQTT!")
+                return 1
+            time.sleep(2)  # Add before connect_adafruit()
             self.client = MQTTClient(self.AIO_USERNAME, self.AIO_SERVER, user=self.AIO_USERNAME, password=self.AIO_KEY)
             self.client.set_callback(self.on_message)
             self.client.connect()
@@ -188,6 +200,7 @@ class Avatar:
                 self.AIO_FEED = f"{self.AIO_USERNAME}/feeds/{data['FEED_1']}"
                 self.AIO_PLAYER_NUM = f"{self.AIO_USERNAME}/feeds/{data['FEED_2']}"
                 self.AIO_PLAYER_SET = f"{self.AIO_USERNAME}/feeds/{data['FEED_3']}"
+                print(f"data: {data}")
                 print("Data read from JSON file successfully.")
 
         except FileNotFoundError:
@@ -223,9 +236,10 @@ class Avatar:
 
 
 def main():
-    game = Avatar(18, 19, 5, 14, 13, 16, 17, 2, info_path="real_info.json")
+    game = Avatar(18, 19, 5, 14, 13, 21, 22, 2, info_path="info.json")
     game.run()
 
 
 if __name__ == "__main__":
     main()
+
