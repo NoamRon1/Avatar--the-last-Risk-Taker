@@ -2,11 +2,12 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="200mm"
+   height="134.36951mm"
+   viewBox="0 0 200 134.36951"
    version="1.1"
    id="svg1"
+   sodipodi:docname="all_small.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,8 +25,8 @@
     <inkscape:page
        x="0"
        y="0"
-       width="210"
-       height="297"
+       width="200"
+       height="134.36951"
        id="page2"
        margin="0"
        bleed="0" />
@@ -42,7 +43,8 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-252.43955,495.49428)">
     <g
        id="g366"
        transform="matrix(0.2149729,0,0,0.2149729,205.17377,-386.11203)">
@@ -510,7 +512,7 @@
          d="M 270.65156,72.554994 V 60.58789"
          id="path492" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="M 576.14371,72.554994 V 67.549078"
          id="path494" />
       <path
@@ -522,7 +524,7 @@
          d="m 278.96503,-173.65038 h 4.59846"
          id="path500" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 576.14371,67.549078 h 56.19167"
          id="path508" />
       <path
@@ -767,7 +769,7 @@
          d="M 226.07324,35.86787 V 17.220037"
          id="path735" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 632.33538,67.549078 8.42487,-5.900208"
          id="path736" />
       <path
@@ -2033,11 +2035,11 @@
          style="font-size:32px;white-space:pre;shape-inside:url(#rect57);display:inline;fill:#000000;stroke:#0000ff"><tspan
            x="115.94531"
            y="58.053945"
-           id="tspan24">Southern
+           id="tspan2">Southern
 </tspan><tspan
            x="115.94531"
            y="98.053945"
-           id="tspan25">Tundra</tspan></text>
+           id="tspan3">Tundra</tspan></text>
       <text
          xml:space="preserve"
          style="font-size:6.35px;fill:#000000;stroke:#0000ff;stroke-width:0.264583"
@@ -2195,7 +2197,7 @@
          d="m 928.97114,104.43499 h 13.79802"
          id="path86" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 724.06167,61.649223 9.51203,6.65956"
          id="path88" />
       <path
@@ -2649,7 +2651,7 @@
          d="m 1093.3646,-112.89376 v -18.93623"
          id="path563" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 793.94368,68.308783 h -2.72521"
          id="path567" />
       <path
@@ -2814,7 +2816,7 @@
          d="M 1119.5028,78.627533 V 110.02564"
          id="path694" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 681.20499,61.649223 h 7.76234"
          id="path696-3" />
       <path
@@ -3079,7 +3081,7 @@
          style="fill:none;stroke:#000000;stroke-width:0.264583"
          id="path944" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 793.94368,72.555343 v -4.24656"
          id="path951" />
       <path
@@ -3144,11 +3146,11 @@
          d="m 1049.6263,-112.89376 v -43.05565"
          id="path998" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 733.5737,68.308783 h 57.64477"
          id="path999" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 688.96733,61.649223 h 35.09434"
          id="path1004" />
       <path
@@ -3160,7 +3162,7 @@
          style="fill:none;stroke:#000000;stroke-width:0.264583"
          id="path1011" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 640.84545,61.649223 h 40.35954"
          id="path1012-0" />
       <path
@@ -6795,7 +6797,7 @@
          d="m 498.45847,-476.39515 -7.39383,5.1771"
          id="path105" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 576.1435,-465.14665 v 5.00776"
          id="path107" />
       <path
@@ -7344,7 +7346,7 @@
          d="m 226.07303,-286.21636 h 18.4396"
          id="path752" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 632.33517,-460.13889 8.42487,5.89915"
          id="path755" />
       <path
@@ -7679,7 +7681,7 @@
          d="m 283.35743,-335.99004 v -44.48492"
          id="path1009" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 640.76004,-454.23974 h 40.35953"
          id="path1013" />
       <path
@@ -7691,7 +7693,7 @@
          d="m 500.37273,-470.32402 h 44.48484"
          id="path1026" />
       <path
-         style="fill:none;stroke:#000000;stroke-width:0.264583"
+         style="fill:none;stroke:#0000ff;stroke-width:0.264583"
          d="m 576.1435,-460.13889 h 56.19167"
          id="path1028" />
       <path
