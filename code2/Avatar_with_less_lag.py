@@ -34,15 +34,15 @@ class Avatar:
 
         # lcd
         i2c = machine.SoftI2C(sda=machine.Pin(sda_pin), scl=machine.Pin(scl_pin), freq=400000)
-        # self.lcd1 = i2c_lcd.I2cLcd(i2c, lcd_address_1, *lcd_size_1)
+        self.lcd1 = i2c_lcd.I2cLcd(i2c, lcd_address_1, *lcd_size_1)
         self.lcd2 = i2c_lcd.I2cLcd(i2c, lcd_address_2, *lcd_size_2)
-        # self.lcd1.display_on()
+        self.lcd1.display_on()
         self.lcd2.display_on()
-        # self.lcd1.putstr("LCD Setup completed")
+        self.lcd1.putstr("LCD Setup completed")
         self.lcd2.putstr("LCD Setup completed")
         print("LCD Setup completed")
         time.sleep(1)
-        # self.lcd1.clear()
+        self.lcd1.clear()
         self.lcd2.clear()
 
         self.emergency_stop = machine.Pin(em_stop_pin, machine.Pin.IN, machine.Pin.PULL_DOWN)
@@ -106,17 +106,17 @@ class Avatar:
 
     def write_lcd(self, text: tuple):
         pass
-        # self.lcd1.clear()
+        self.lcd1.clear()
         self.lcd2.clear()
         for i in range(len(text)):
-            # self.lcd1.move_to(0, i)
-            # self.lcd1.putstr(text[i])
+            self.lcd1.move_to(0, i)
+            self.lcd1.putstr(text[i])
             self.lcd2.move_to(0, i)
             self.lcd2.putstr(text[i])
 
     def update_lcd(self, player_num):
-        # self.lcd1.move_to(18, 2)
-        # self.lcd1.putstr(str(player_num))
+        self.lcd1.move_to(18, 2)
+        self.lcd1.putstr(str(player_num))
         self.lcd2.move_to(18, 2)
         self.lcd2.putstr(str(player_num))
 
@@ -168,7 +168,7 @@ class Avatar:
         print(f"Message received on topic {topic}: {msg}")
         if topic == b'Noam_Ron/feeds/Set Player - Avatar the last Risk taker':
             self.current_player = int(msg) - 1
-            #self.update_lcd(self.current_player)
+            self.update_lcd(self.current_player)
             self.send_msg(int(msg))
         else:
             if msg == b'1':
@@ -183,8 +183,8 @@ class Avatar:
         while not self.emergency_stop.value():
             time.sleep(0.1)
         print("Button pressed, starting the game...")
-        #self.lcd1.clear()
-        #self.lcd2.clear()
+        self.lcd1.clear()
+        self.lcd2.clear()
 
     def json_data_read(self):
         try:
@@ -230,12 +230,13 @@ class Avatar:
                         "loaded successfully ",
                         "--------------------"))
         gc.collect()
-        #self.wait_to_start()
+        # self.wait_to_start()
 
 def main():
-    game = Avatar(18, 19, 17, 14, 13, 21, 22, 2, info_path="info.json")
+    game = Avatar(18, 19, 17, 27, 13, 21, 22, 2, info_path="info.json")
     game.run()
 
 if __name__ == "__main__":
     main()
 
+ 
